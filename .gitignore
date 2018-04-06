@@ -1,0 +1,8 @@
+#root folder
+gentelella
+node_modules
+public
+
+#log files
+yarn-error.log
+yarn.lock
