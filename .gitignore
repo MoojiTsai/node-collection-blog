@@ -2,6 +2,8 @@
 gentelella
 node_modules
 public
+.sass-cache/
+
 
 #log files
 yarn-error.log
