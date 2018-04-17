@@ -11,28 +11,35 @@ const config = require('config-lite')(__dirname);
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const adminRouter = require('./routes/admin');
+const formidable = require('express-formidable');
 const app = express();
+const router = express.Router();
 const pkg = require('./package');
-  var db = mongoose.createConnection('mongodb://localhost/localhost'); //创建一个数据库连接
- db.on('error',console.error.bind(console,'连接错误:'));
- db.once('open',function(){
-     //一次打开记录
-   });
 
-   var PersonSchema = new mongoose.Schema({
-    name:String   //定义一个属性name，类型为String
-  });
-  var CashSchema = new mongoose.Schema({
-   money:String   //定义一个属性name，类型为String
- });
-   var PersonModel = db.model('Person',PersonSchema);
-   var CashModel = db.model('Money',CashSchema);
-   var personEntity = new PersonModel({name:'Krouky'});
-   var CashEntity = new CashModel({money:'1000'});
-   personEntity.save();
-   CashEntity.save();
-     //打印这个实体的名字看看
-     console.log(personEntity.name); //Krouky
+
+  // var PostModel = db.model('Post',{
+  //    name: String,
+  //    title:  String,
+  //    author: String,
+  //    body:   String,
+  //    date: { type: Date, default: Date.now },
+  //    hidden: Boolean,
+  // });
+
+
+
+  // var postEntity = new PostModel(
+  //   {name:'Krouky',
+  //    title:'my turbo life',
+  //    body:'全家現在也可以報電話末三碼喔～只是有些物流末三碼不會顯示在櫃檯電腦資料一般蝦皮跟其他拍賣基本上都可以依照號碼查了',
+  //    hidden:false
+  //  });
+
+  // console.log(postEntity.name);
+
+
+
+
 
 
 // view engine setup
@@ -44,10 +51,21 @@ app.set('view engine', 'ejs');
 //set static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
+app.use(formidable({
+  uploadDir: path.join(__dirname, 'public/img'), // 上传文件目录
+  keepExtensions: true// 保留后缀
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+router.use('/', indexRouter);
+router.use('/signup', require('./routes/signup'));
+router.use('/signin', require('./routes/signin'));
+router.use('/signout', require('./routes/signout'));
+router.use('/admin', adminRouter);
+router.use('/users', usersRouter);
+app.use(router);
 
 app.use(session({
   name: config.session.key, // 设置 cookie 中保存 session id 的字段名称
@@ -65,17 +83,14 @@ app.use(session({
 
 app.use(cookieParser('keyboard cat'));
 
-app.use('/', indexRouter);
-app.use('/admin', adminRouter);
-app.use('/users', usersRouter);
 
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+  // next(createError(404));
+// });
 
 // error handler
 app.use(function(err, req, res, next) {

@@ -1,0 +1,21 @@
+$dark-primary : #343a40;
+
+.sidebar{
+  margin:0;
+  display: inline-block;
+  padding-top: 1px;
+  min-height: 100vh;
+  width: 200px;
+  background-color:#eee;
+  ul ul a{
+    padding-left: 30px;
+  }
+  a{
+  color:$dark-primary;
+  width: 100%;
+  }
+  a:hover{
+    background-color: $dark-primary;
+    color: white;
+  }
+}

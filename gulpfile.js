@@ -2,59 +2,45 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
-    sass = require('gulp-ruby-sass'),
+    sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
-    browserSync = require('browser-sync').create();
+    mainBowerFiles = require('main-bower-files');
 
-var DEST = 'public/build/';
 
-gulp.task('scripts', function() {
-    return gulp.src([
-        'gentelella/src/js/helpers/*.js',
-        'gentelella/src/js/*.js',
-      ])
-      .pipe(concat('custom.js'))
-      .pipe(gulp.dest(DEST+'/js'))
-      .pipe(rename({suffix: '.min'}))
-      .pipe(uglify())
-      .pipe(gulp.dest(DEST+'/js'))
-      .pipe(browserSync.stream());
+
+gulp.task('bower', function() {
+    return gulp.src(mainBowerFiles({
+               overrides: {
+                   bootstrap: {
+                       main: [
+                           './dist/js/bootstrap.js',
+                           './dist/css/*.css'
+                       ]
+                   }
+               }
+           }))
+        .pipe(gulp.dest('./.tmp/vendor'));
 });
 
-// TODO: Maybe we can simplify how sass compile the minify and unminify version
-var compileSASS = function (filename, options) {
-  return sass('gentelella/src/scss/*.scss', options)
-        .pipe(autoprefixer('last 2 versions', '> 5%'))
-        .pipe(concat(filename))
-        .pipe(gulp.dest(DEST+'/css'))
-        .pipe(browserSync.stream());
-};
-
-gulp.task('sass', function() {
-    return compileSASS('custom.css', {});
+gulp.task('VendorJs',['bower'], function() {
+  return gulp.src('./.tmp/vendor/**/*.js')
+    .pipe(gulp.dest('./public/js'));
 });
 
-gulp.task('sass-minify', function() {
-    return compileSASS('custom.min.css', {style: 'compressed'});
+gulp.task('VendorCss',['bower'], function() {
+  return gulp.src('./.tmp/vendor/**/*.css')
+    .pipe(gulp.dest('./public/css'));
 });
 
-gulp.task('browser-sync', function() {
-    browserSync.init({
-        server: {
-            baseDir: './'
-        },
-        startPath: './production/index.html'
-    });
+gulp.task('scss', function() {
+  return gulp.src('./source/scss/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./public/css'));
+
+});
+gulp.task('scss:watch', function () {
+  gulp.watch('./source/**/*.scss', ['scss']);
 });
 
-gulp.task('watch', function() {
-  // Watch .html files
-  gulp.watch('production/*.html', browserSync.reload);
-  // Watch .js files
-  gulp.watch('src/js/*.js', ['scripts']);
-  // Watch .scss files
-  gulp.watch('src/scss/*.scss', ['sass', 'sass-minify']);
-});
 
-// Default Task
-gulp.task('default', ['browser-sync', 'watch']);
+gulp.task('default',['VendorJs','VendorCss','scss','scss:watch']);
