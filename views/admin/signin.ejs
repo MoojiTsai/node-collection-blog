@@ -1,0 +1,18 @@
+<%- include('partials/header.ejs') %>
+
+    <div class="panel-md">
+        <form class="form-signin" method="post" action="<%=form_action%>">
+            <h2><%=title%></h2>
+            <%if (msg) { %>
+                <h2><%=msg%></h2>
+            <% } %>
+            <input type="text" class="form-control" name="account" placeholder="Email Address"   autofocus="" />
+            <input type="password" class="form-control" name="password" placeholder="password"  />
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me"  name="rememberMe"> Remember me
+            </label>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登入</button>
+        </form>
+    </div>
+
+<%- include('partials/footer.ejs') %>

@@ -9,7 +9,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const config = require('config-lite')(__dirname);
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const adminRouter = require('./routes/admin');
 const formidable = require('express-formidable');
 const app = express();
@@ -56,17 +55,9 @@ app.use(formidable({
   keepExtensions: true// 保留后缀
 }));
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-router.use('/', indexRouter);
-router.use('/signup', require('./routes/signup'));
-router.use('/signin', require('./routes/signin'));
-router.use('/signout', require('./routes/signout'));
-router.use('/admin', adminRouter);
-router.use('/users', usersRouter);
-app.use(router);
-
+app.use('/', indexRouter);
+app.use('/admin', adminRouter);
 app.use(session({
   name: config.session.key, // 设置 cookie 中保存 session id 的字段名称
   secret: config.session.secret, // 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改

@@ -12,10 +12,23 @@ $dark-primary : #343a40;
   }
   a{
   color:$dark-primary;
-  width: 100%;
+  width: 200px;
   }
   a:hover{
     background-color: $dark-primary;
     color: white;
   }
 }
+
+.panel-sm{
+  margin:10% auto;
+  padding:0 40%;
+}
+.panel-md{
+  margin:3% auto;
+  padding:0 25%;
+}
+input{
+  margin: 10px 0;
+}
+ 

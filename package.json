@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^2.0.0",
     "config-lite": "^2.1.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^2.0.1",
@@ -20,7 +21,8 @@
     "http-errors": "^1.6.3",
     "mongoose": "^5.0.13",
     "morgan": "~1.9.0",
-    "sha1": "^1.1.1"
+    "sha1": "^1.1.1",
+    "vue-cli": "^2.9.3"
   },
   "devDependencies": {
     "browser-sync": "^2.12.10",

@@ -3,13 +3,8 @@ var router = express.Router();
 var app = express();
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: '縮小檢視工作室' });
 });
-
-// router.use('/signup', require('./signup'));
-// router.use('/signin', require('./signin'));
-// router.use('/signout', require('./signout'));
-
 
 
 module.exports = router;
