@@ -6,58 +6,35 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const logger = require('morgan');
 const config = require('config-lite')(__dirname);
-const indexRouter = require('./routes/index');
-const adminRouter = require('./routes/admin');
-const formidable = require('express-formidable');
 const app = express();
 const router = express.Router();
+const indexRouter = require('./routes/index');
+const adminRouter = require('./routes/admin');
 const pkg = require('./package');
-
-
-  // var PostModel = db.model('Post',{
-  //    name: String,
-  //    title:  String,
-  //    author: String,
-  //    body:   String,
-  //    date: { type: Date, default: Date.now },
-  //    hidden: Boolean,
-  // });
-
-
-
-  // var postEntity = new PostModel(
-  //   {name:'Krouky',
-  //    title:'my turbo life',
-  //    body:'全家現在也可以報電話末三碼喔～只是有些物流末三碼不會顯示在櫃檯電腦資料一般蝦皮跟其他拍賣基本上都可以依照號碼查了',
-  //    hidden:false
-  //  });
-
-  // console.log(postEntity.name);
-
-
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const expressValidator = require('express-validator');
 
 
 
 
 // view engine setup
-// process.env.NODE_ENV = 'production';
-// console.log(process.env.NODE_ENV);
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //set static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(flash());
-app.use(formidable({
-  uploadDir: path.join(__dirname, 'public/img'), // 上传文件目录
-  keepExtensions: true// 保留后缀
-}));
+
 app.use(logger('dev'));
 app.use(cookieParser());
-app.use('/', indexRouter);
-app.use('/admin', adminRouter);
+app.use(expressValidator());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(session({
   name: config.session.key, // 设置 cookie 中保存 session id 的字段名称
   secret: config.session.secret, // 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改
@@ -72,19 +49,39 @@ app.use(session({
 }));
 
 
-app.use(cookieParser('keyboard cat'));
+app.use(passport.initialize());
+app.use(passport.session()); // 一定要在 initialize 之後
+passport.serializeUser(function (user_id, done) {
+  done(null, user_id);
+});
+
+passport.deserializeUser(function (user_id, done) {
+
+  done(null, user_id);
+
+});
+ 
+
+
+
+app.use('/', indexRouter);
+app.use('/admin', adminRouter);
 
 
 
 
 
 // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
-  // next(createError(404));
-// });
+app.use(function (req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
+
+
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

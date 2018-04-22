@@ -3,7 +3,7 @@ var router = express.Router();
 var app = express();
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: '縮小檢視工作室' });
+  return res.render('index', { title: '縮小檢視工作室' });
 });
 
 

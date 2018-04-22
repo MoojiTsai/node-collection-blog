@@ -1,18 +1,16 @@
 
 module.exports = {
-  checkLogin: function checkLogin (req, res, next) {
-    if (!req.session.user) {
-      req.flash('error', '未登入')
-      return res.redirect('/signin')
-    }
-    next();
-  },
 
-  checkNotLogin: function checkNotLogin (req, res, next) {
-    if (req.session.user) {
-      req.flash('error', '已登入')
-      return res.redirect('back')// 返回之前的页面
+  authencation: 
+    function (req, res, next)  {
+      console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+      if (req.isAuthenticated()) {
+
+        return next();
+      };
+      req.flash('requiresignin','請先登入');
+      res.redirect('/admin/signin');
     }
-    next();
-  }
+  
 }
+

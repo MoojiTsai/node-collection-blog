@@ -3,10 +3,16 @@
     <div class="panel-md">
         <form class="form-signin" method="post" action="<%=form_action%>">
             <h2><%=title%></h2>
-            <%if (msg) { %>
-                <h2><%=msg%></h2>
+            <%if (err) { %>
+                <span><%=err%></span>
             <% } %>
-            <input type="text" class="form-control" name="account" placeholder="Email Address"   autofocus="" />
+            <%if (register_success) { %>
+                <span><%=register_success%></span>
+            <% } %>
+            <%if (requiresignin) { %>
+                <span><%=requiresignin%></span>
+            <% } %>
+            <input type="text" class="form-control" name="username" placeholder="username"   autofocus="" />
             <input type="password" class="form-control" name="password" placeholder="password"  />
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"  name="rememberMe"> Remember me
