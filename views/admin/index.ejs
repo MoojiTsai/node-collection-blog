@@ -1,12 +1,2 @@
-
-<%- include('partials/header.ejs',{title:title,msg:msg}) %>
-
-<div class="row">
-  <div class="col-2">
-  <%- include('partials/column-left.ejs') %>
-  </div>
- 
-</div>
-
-</body>
-<%- include('partials/footer.ejs') %>
+<% layout('admin/layouts/admin_master') -%>
+<h1>This is  <%= title %> </h1>

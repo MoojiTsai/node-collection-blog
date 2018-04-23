@@ -2,7 +2,6 @@ const createError = require('http-errors');
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -12,18 +11,19 @@ const config = require('config-lite')(__dirname);
 const app = express();
 const router = express.Router();
 const indexRouter = require('./routes/index');
-const adminRouter = require('./routes/admin');
+const adminRouter = require('./routes/admin/admin');
 const pkg = require('./package');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const expressValidator = require('express-validator');
+const engine = require('ejs-mate'); 
 
 
 
 
 // view engine setup
 
-
+app.engine('ejs', engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //set static files
@@ -51,15 +51,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session()); // 一定要在 initialize 之後
-passport.serializeUser(function (user_id, done) {
-  done(null, user_id);
-});
-
-passport.deserializeUser(function (user_id, done) {
-
-  done(null, user_id);
-
-});
  
 
 

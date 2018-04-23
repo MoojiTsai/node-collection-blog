@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
 
   req.logout();
   req.session.destroy();
-  res.redirect('/login');
+  res.redirect('/admin/signin');
 })
 
 module.exports = router

@@ -1,8 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const UserModel = require('../models/users');
-const checkNotLogin = require('../middleware/check').checkNotLogin
-const passport = require('../middleware/passport');
+const passport = require('../../middleware/passport');
 const bcrypt = require('bcrypt');
 
 // GET /signin 登录页
@@ -23,6 +21,7 @@ router.post('/', passport.authenticate('local',
     failureFlash: 'Invalid username or password!!',
     successFlash: 'Welcome!' }
   ),function(req,res){
+    console.log('res: ', res);
     res.redirect('/admin');
   });
 

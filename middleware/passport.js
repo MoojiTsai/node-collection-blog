@@ -17,11 +17,13 @@ passport.deserializeUser(function (user_id, done) {
 let strategy = new LocalStrategy(
 
     function (username, password, done) {
-        User.findOne({ account: username }).exec().then(
+        User.findOne({ account: username }).then(
             function (result) {
                 if (result) {
+
                     bcrypt.compare(password, result.password, function (err, res) {
                         if (err) console.log(err);
+
                         if (res == true) {
                             done(null, result);
                         } else {
