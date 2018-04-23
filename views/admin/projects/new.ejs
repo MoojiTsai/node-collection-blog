@@ -1,0 +1,42 @@
+<% layout('admin/layouts/admin_master') -%>
+ 
+  <div class="row">
+    <div class="container">
+      <form class="ml-5 mt-4">
+        <div class="form-group">
+          <label for="projectname">專案名稱</label>
+          <input class="form-control col-sm-6" id="projectname" placeholder="專案名稱">
+        </div>
+        <span>專案類別</span>
+        <div class="form-group">
+           
+
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+            <label class="form-check-label" for="inlineCheckbox1">A類別</label>
+          </div>
+          <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+              <label class="form-check-label" for="inlineCheckbox1">B類別</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                <label class="form-check-label" for="inlineCheckbox1">C類別</label>
+              </div>
+
+        </div>
+
+        <!-- <img src="..." class="img-fluid projectimg" alt="專案圖片"> -->
+        <div class="projectimg"></div>
+        <a href="/amdin/upload" class="btn btn-primary">上傳圖片</a>
+        
+        <div class="form-group">
+          <label for="description">專案描述</label>
+          <textarea class="form-control col-sm-6" id="description" rows="3"></textarea>
+        </div>
+
+        <button class="btn btn-primary" type="submit">確認送出</button>
+
+      </form>
+    </div>
+  </div>
