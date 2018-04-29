@@ -1,2 +1,47 @@
 <% layout('admin/layouts/admin_master') -%>
-<h1>This is  <%= title %> </h1>
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col  pl-5">
+                <form method="post" action="/admin/projects/category">
+                    <span>新增類別</span>
+                    <input class="form-control w-75" name="category" type="text">
+                    <input type="submit" class=" btn btn-primary" value="送出">
+                </form>
+            </div>
+            <div class="col  pr-5">
+                <table class="table table-hover  ">
+                    <thead>
+                        <tr>
+                            <th>類別名稱</th>
+                            <th>動作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% categories.forEach(function(category){ %>
+                            <tr>
+                                <td>
+                                    <%=category.name%>
+                                </td>
+                                <td class="delete" data-id="<%=category.id%>">刪除</td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('.delete').on('click', function () {
+            let category_id = $(this).attr('data-id');
+
+            $.ajax({
+                url: '/admin/projects/category/delete',
+                type: 'DELETE',
+                data: { id: category_id }
+            });
+            $(this).parent('tr').remove();
+
+        })
+    </script>

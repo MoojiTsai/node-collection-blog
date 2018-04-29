@@ -16,7 +16,7 @@ gulp.task('bower', function() {
                            './dist/js/bootstrap.js',
                            './dist/css/*.css'
                        ]
-                   }
+                   } 
                }
            }))
         .pipe(gulp.dest('./.tmp/vendor'));

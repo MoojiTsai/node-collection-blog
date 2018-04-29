@@ -21,6 +21,8 @@ const engine = require('ejs-mate');
 
 
 
+
+
 // view engine setup
 
 app.engine('ejs', engine);
@@ -28,13 +30,16 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //set static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/storage',express.static(path.join(__dirname, 'storage')));
 app.use(flash());
 
 app.use(logger('dev'));
 app.use(cookieParser());
 app.use(expressValidator());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(session({
   name: config.session.key, // 设置 cookie 中保存 session id 的字段名称
   secret: config.session.secret, // 通过设置 secret 来计算 hash 值并放在 cookie 中，使产生的 signedCookie 防篡改
@@ -51,8 +56,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session()); // 一定要在 initialize 之後
- 
-
 
 
 app.use('/', indexRouter);

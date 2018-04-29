@@ -1,23 +1,65 @@
 <% layout('admin/layouts/admin_master') -%>
-    <h1>This is
-        <%= title %>
-    </h1>
 
-    <div class="container">
-        <table class="table table-hover">
+
+    <div class="container col-md-12 m-5 mx-auto">
+        <table class="table table-hover " id="indexTable">
             <thead>
                 <tr>
+                    <th>圖片</th>
                     <th>專案名稱</th>
                     <th>類別</th>
+                    <th>排序</th>
                     <th>描述</th>
+                    <th>編輯</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>john@example.com</td>
-                </tr>
+
+                
+                    <tr v-for="post in posts">
+                        <td>
+                            <img v-bind:src="'/'+post.image" width="100px" height="100px" alt="">
+                        </td>
+                        <td>
+                          {{post.name}}
+                        </td>
+                        <td>
+                                {{post.categories}}
+                        </td>
+                        <td>
+                                {{post.sort}}
+                        </td>
+                        <td>
+                                {{post.description.replace(/<(?:.|\n)*?>/gm, '').substring(0,15)}}
+                        </td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" v-bind:href="'/admin/projects/edit/'+ post._id">編輯</a>
+                            <a class="btn btn-danger btn-sm" href="" @click="deletePost" :data-id="post._id">刪除</a>
+                        </td>
+
+                    </tr>
+                    
             </tbody>
         </table>
     </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/js/vue.js"></script>
+    <script>
+
+        new Vue({
+            el: '#indexTable',
+            data: {posts:<%-JSON.stringify(posts)%>},
+            methods: {
+                deletePost: function (event) {
+                    let confirm = window.confirm("確定要刪除？");
+                    if(confirm){
+                    event.preventDefault();
+                    axios.delete('http://localhost:3000/admin/projects/delete/' + event.target.dataset.id)
+                        .then(function (res) {
+                            event.target.parentNode.parentNode.setAttribute('style', 'display:none');
+                        });
+                    }    
+                }
+            }
+        });
+    </script>

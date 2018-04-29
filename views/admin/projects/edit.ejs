@@ -1,2 +1,135 @@
 <% layout('admin/layouts/admin_master') -%>
-<h1>This is  <%= title %> </h1>
+
+
+    <% block('head').append('<link type="text/css" rel="stylesheet" href="/css/fontawesome-all.css">') %>
+
+
+        <div class="row">
+
+
+            <div class="col-md-6">
+                <div class="container" id="edit_form">
+
+                    <form class="ml-5 mt-4" method="post" action="/admin/projects/edit/<%=formdata.id%>" enctype="multipart/form-data">
+                        <div class="form-group ">
+                            <h4>
+                                <label for="projectname">專案名稱</label>
+                            </h4>
+
+                            <input class="form-control " name="projectname" id="projectname" value="<%=formdata.name%>" placeholder="專案名稱">
+                        </div>
+
+                        <div class="form-group">
+                            <h4>
+                                <label for="">類別</label>
+                            </h4>
+                            <%categories.forEach((category)=>{%>
+                                <% i =0%>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" name="category[]" type="checkbox" id="inlineCheckbox<%=i%>" <%=formdata.categories.indexOf(category.name)!==-1?
+                                            'checked': ''%> value="
+                                        <%=category.name%>">
+                                            <label class="form-check-label" for="inlineCheckbox<%=i%>">
+                                                <%-category.name%>
+                                            </label>
+                                    </div>
+                                    <% i +=1%>
+                                        <%})%>
+                        </div>
+
+                        <div class="form-group ">
+                            <h4>
+                                <label for="imageFile">專案圖片</label>
+                                </h2>
+                                <img v-bind:src="'/'+StorageImagePath"   class="rounded mx-auto d-block" height="200" alt="">
+                                <input type="hidden" name="imageFile" v-model:value="StorageImagePath">
+                                <input type="file"  class="col-md-7" name="tempimage" @change="onFileSelected" />
+                                <!-- <button type="button" class="btn btn-primary" @click="onUpload">新圖片上傳</button> -->
+                        </div>
+                        <div class="form-group ">
+                            <h4>
+                                <label for="sort">排序</label>
+                            </h4>
+                            <input class="form-control" value="<%=formdata.sort%>" type="text" name="sort" id="sort" />
+                        </div>
+
+
+                        <div class="form-group ">
+                            <h4>
+                                <label for="description">專案描述</label>
+                            </h4>
+                            <textarea class="form-control" value="" name="description" id="description"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary pull-right" type="submit">確認送出</button>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="container">
+                    <%if(typeof errors !== 'undefined') { %>
+                        <%for( let error in errors) { %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= errors[error].msg %>
+                            </div>
+                            <% } %>
+                                <% } %>
+
+                </div>
+            </div>
+
+        </div>
+
+        <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-beta.3/classic/ckeditor.js"></script>
+        <script>
+            ClassicEditor
+                .create(document.querySelector('#description'))
+                .then(function(res){
+                    res.setData('<%=formdata.description%>'); 
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+
+        </script>
+
+        <style>
+            .ck-editor__editable {
+                min-height: 100px;
+            }
+        </style>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="/js/vue.js"></script>
+        <script>
+
+
+           let edit_form = new Vue({
+                el: '#edit_form',
+                data: {
+                    selectedFile: '',
+                    StorageImagePath:'<%=formdata.image%>',
+                },
+                methods: {
+                    onFileSelected: function (event) {
+                        
+                        this.selectedFile = event.target.files[0]
+                        let fd = new FormData();
+                        if (this.selectedFile) {
+                            fd.append('imageFile', this.selectedFile, this.selectedFile.name);
+                            axios.post('/admin/projects/fileUploader', fd).then(function (res) { 
+                                edit_form.StorageImagePath=res.data;
+                                console.log( edit_form.StorageImagePath)
+
+                            })
+                                .catch(function (err) { console.log(err) });
+                        } else {
+                            alert('no image!');
+                        }
+                    }
+                }
+
+            })
+        </script>
