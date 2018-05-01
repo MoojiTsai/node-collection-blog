@@ -31,6 +31,7 @@ app.set('view engine', 'ejs');
 //set static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/storage',express.static(path.join(__dirname, 'storage')));
+app.use('/bower_components',  express.static(path.join(__dirname, 'bower_components')));
 app.use(flash());
 
 app.use(logger('dev'));

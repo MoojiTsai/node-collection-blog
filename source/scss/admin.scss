@@ -1,30 +1,138 @@
-$dark-primary : #343a40;
+$primary : #eee;
+$secondary: #e13f01;
+$primary-dark:#20242b;
+$header-Height:60px; 
+$logo-Width: 230px; 
+
+
+*{
+  // border:1px solid red ;
+}
 html,body{
     height: 100%;
+    background-color: #efefef;
 }
-
+.header{
+  width: 100%;
+  height: $header-Height;
+  line-height: $header-Height;
+  background-color: white;
+  display: flex;
+  position: relative;
+  z-index: 200;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16);
+  ul{
+    flex:2; 
+    display:flex; 
+    flex-direction: row; 
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    li{
+      display:flex;
+      height: $header-Height;
+      list-style: none;
+      width: 80px;
+      a{
+        align-self: auto;
+        display: block;
+        text-decoration: none;
+        height: $header-Height;
+        padding:0 20px; 
+        color: $secondary;
+        &:hover{
+        height: $header-Height;
+        background-color: $secondary;
+        color: white;
+      }
+      
+      } 
+     
+    } 
+  }
+  .title{
+    padding-left: 20px;
+  }
+  .logo{
+    display: inline-block;
+    width: $logo-Width;
+    background-color:$secondary;
+    a{color:$primary;
+      padding:10px;   
+    }
+  }
+} 
 .sidebar{
-  margin:0;
-  display: inline-block;
-  padding-top: 1px;
+  top:0;
+  left: 0;
+  
+  z-index:50;
+  color:$primary;
+  position: fixed;
   min-height: 100%;
-  width: 200px;
-  background-color:#eee;
-  ul ul a{
-    padding-left: 30px;
-  }
+  width: $logo-Width;
+  display: inline-block;
+  margin:0;
+  padding-top: $header-Height;
+  background-color:$primary-dark;
+  ul.group{
+    
+    padding-left: 0px;
+    > li{
+      &:after{
+        padding-left: 20px;
+        display:inline-block; 
+        content:">";
+      } 
+      padding-left: 20px;
+      height: 40px;
+      line-height: 40px; 
+      width: 100%;
+      list-style: none; 
+    }
+    ul{
+      padding:0px;
+      li{
+        padding-left: 20px;
+        height: 40px;
+        line-height: 40px; 
+        width: 100%;
+        list-style: none; 
+        a{
+          padding:10px;
+          text-decoration: none;
+        }
+        &:hover{
+          background-color: rgb(86, 90, 99);
+          opacity: 0.8;
+          color: $primary-dark;
+        } 
+        
+      }
+    }
+  } 
   a{
-  color:$dark-primary;
-  width: 200px;
+  color:#ffffffcc;
+  width: $logo-Width;
   }
-  a:hover{
-    background-color: $dark-primary;
-    color: white;
-  }
+  
 }
 
- 
+
+.main{
+  
+  width: 100%;
+  padding-left:$logo-Width;
+  > div{
+    width: 100%;
+    display:inline-block;
+    padding: 20px;
+    // border:1px solid red;
+
+
+  } 
+} 
+
 input{
   margin: 10px 0;
 }
- 
+

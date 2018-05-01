@@ -21,10 +21,10 @@
                     <tbody>
                         <% categories.forEach(function(category){ %>
                             <tr>
-                                <td>
-                                    <%=category.name%>
+                                <td> <%=category.name%></td>
+                                <td class="delete " data-id="<%=category.id%>">
+                                    <button class="btn btn-primary btn-sm">刪除</button>
                                 </td>
-                                <td class="delete" data-id="<%=category.id%>">刪除</td>
                             </tr>
                             <% }); %>
                     </tbody>
@@ -34,7 +34,10 @@
     </div>
     <script>
         $('.delete').on('click', function () {
-            let category_id = $(this).attr('data-id');
+
+            
+            if(window.confirm('你確定？')==true) {
+                let category_id = $(this).attr('data-id');
 
             $.ajax({
                 url: '/admin/projects/category/delete',
@@ -42,6 +45,8 @@
                 data: { id: category_id }
             });
             $(this).parent('tr').remove();
+            }
+            
 
         })
     </script>

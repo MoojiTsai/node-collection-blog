@@ -40,7 +40,7 @@
           <div class="form-group ">
             <h4><label for="description">專案描述</label></h4>  
             
-            <textarea class="form-control" value="" name="description" id="description"></textarea>
+            <textarea class="form-control" value="" name="description" id="editor1"></textarea>
           </div>
 
           <button class="btn btn-primary pull-right" type="submit">確認送出</button>
@@ -61,19 +61,14 @@
         </div>     
     </div>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-beta.3/classic/ckeditor.js"></script>
-    <script>
-      ClassicEditor
-        .create(document.querySelector('#description'))
-        .catch(error => {
-          console.log(error);
-        });
-
-  
-    </script>
-
-<style>
-    .ck-editor__editable {
-      min-height: 100px;
-  }
-  </style>
+   
+      <!-- TinyMCE v4.7.6 -->
+      <script src="/bower_components/tinymce/tinymce.min.js"></script>
+      <script>
+          tinyMCE.init({
+  selector: "textarea", // 目標物件
+  auto_focus: "editor1", // 聚焦物件
+ 
+});
+      </script>
+ 

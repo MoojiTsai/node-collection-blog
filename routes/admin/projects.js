@@ -7,7 +7,7 @@ var fs = require("fs");//操作文件
 
 
 
-var storage = multer.diskStorage({
+let storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './storage/')
   },
@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
   }
 })
 
-var upload = multer({ storage: storage }).single('imageFile');
+let upload = multer({ storage: storage }).single('imageFile');
 
 
 
@@ -51,10 +51,12 @@ router.get('/new', function (req, res, next) {
 
 
 router.post('/new', function (req, res, next) {
+  
   upload(req, res, function (err) {
     if (err) {
       return console.log(err);
     }
+    console.log(req.body);
     req.checkBody('projectname', 'Projectname cant be empty!!!').notEmpty();
     req.checkBody('category', 'Category cant be empty!!!').notEmpty();
     req.checkBody('description', 'Description cant be empty!!!').notEmpty();
@@ -115,7 +117,6 @@ router.get('/edit/:projectId', function (req, res, next) {
 });
 
 router.post('/edit/:projectId', function (req, res, next) {
-   
     req.checkBody('projectname', 'Projectname cant be empty!!!').notEmpty();
     req.checkBody('category', 'Category cant be empty!!!').notEmpty();
     req.checkBody('description', 'Description cant be empty!!!').notEmpty();
@@ -132,14 +133,11 @@ router.post('/edit/:projectId', function (req, res, next) {
 
       let projectname = req.body.projectname;
       let category = req.body.category;
-      console.log(category);
+      
       let description = req.body.description;
       let sort = req.body.sort;
-      let imagepath;
-      if (req.file !== undefined) {
-        imagepath = req.body.imagePath;
-      }
-
+      let imagepath= req.body.imageFile;
+      
       let post = {
         name: projectname,
         categories: category,
@@ -147,9 +145,11 @@ router.post('/edit/:projectId', function (req, res, next) {
         image: imagepath,
         sort: sort
       }
-
-      Post.updatePost(req.params.id,post).then((result)=>{
-        console.log(result);
+      Post.updatePost(req.params.projectId,post).then((result)=>{
+        console.log('res '+result);
+      }).catch(function(err){
+        console.log('err: ', err);
+        
       });
       res.redirect('/admin/projects/');
     }

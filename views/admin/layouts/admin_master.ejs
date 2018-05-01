@@ -3,90 +3,92 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/custom.css">
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <%- block('head').toString() %>
-    <title><%=title%></title>
+        <title>
+            <%=title%>
+        </title>
 </head>
+<% if(typeof msg !== 'undefined') { %>
+    <span style="color:aliceblue;">
+        <%=msg%>
+    </span>
+    <%}%>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-        <a class="navbar-brand" href="/admin">縮小檢視控制中心 - <%=title%> </a>
-        <% if(typeof msg !== 'undefined') { %>
-            <span style="color:aliceblue;">
-                <%=msg%>
-            </span>
-            <%}%>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <body>
+            <nav class=" header ">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto mr-3 ">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin">首頁</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/signup">註冊</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/signin">登入</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/signout">登出</a>
-                        </li>
-                    </ul>
-
+                <div class="logo">
+                    <a href="/admin">縮小檢視控制中心
+                    </a>
                 </div>
-    </nav>
+                <div class="title">
+                    <%=title%>
+                </div>
+                <ul>
+                    <li>
+                        <a href="/admin">首頁</a>
+                    </li>
+                    <li>
+                        <a href="/admin/signup">註冊</a>
+                    </li>
+                    <li>
+                        <a href="/admin/signin">登入</a>
+                    </li>
+                    <li>
+                        <a href="/admin/signout">登出</a>
+                    </li>
+                </ul>
+            </nav>
 
-    <div class="row h-100">
-        <div class="col-2">
+
+
+
 
             <div class="sidebar">
-                <ul class="nav  flex-column">
-
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" aria-expanded="true" href="#works">作品管理</a>
-                        <ul class="nav collapse" id="works">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects/new"> - 新增作品</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects/"> - 所有作品</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects/category"> - 作品類別</a>
-                            </li>
-
-                        </ul>
+                <ul class="group">
+                    <li>
+                        作品管理 
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" aria-expanded="true" href="#navmanager">Appearance</a>
-                        <ul class="nav collapse" id="navmanager">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/menu"> -導航列管理 </a>
-                            </li>
-
-                        </ul>
-                    </li>
-     
+                    <ul>
+                        <li>
+                            <a href="/admin/projects"> 所有作品 </a>
+                        </li>
+                        <li>
+                            <a href="/admin/projects/new"> 新增作品 </a>
+                        </li>
+                        <li>
+                            <a href="/admin/projects/category"> 作品類別 </a>
+                        </li>
+                    </ul>
                 </ul>
+
+                <ul class="group">
+                    <li>
+                         首頁外觀管理 
+                    </li>
+                    <ul>
+                        <li>
+                            <a href="/admin/menu"> 導航列管理 </a>
+                        </li>
+                    </ul>
+                </ul>
+
             </div>
 
-        </div>
-        <div class="col-10">
-            <%- body -%>
-        </div>
-    </div>
+            <div class=" main">
+                <div>
+                    <%- body -%>
+                </div>
+            </div>
 
-</body>
 
-<footer>
-     
-        <%- block('footer').toString() %>
-</footer>
+        </body>
+
+        <footer>
+            <%- block('footer').toString() %>
+                </foote
