@@ -1,10 +1,33 @@
-var express = require('express');
-var router = express.Router();
-var app = express();
+const express = require('express');
+const router = express.Router();
+const app = express();
+const Portfolio = require('../models/post');
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  return res.render('index', { title: '縮小檢視工作室' });
+router.get('/', function (req, res) {
+
+  Portfolio.getPortfolios().then((posts) => {
+    data = {
+      title: '縮小檢視工作室',
+      posts: posts,
+    }
+    return res.render('index', data);
+  }).catch((e)=>{console.log('err '+e)});
+
 });
 
+
+router.get('/portofolio/:category',(req,res)=>{
+  let category = req.params.category; 
+  
+  Portfolio.getPortfoliosByCateory(category).then((posts) => {
+    console.log('posts: ', posts);
+    let data  = {
+      title:category,
+      posts:posts
+    } 
+    res.render('portofolio',data);
+  }).catch((e)=>{console.log('err '+e)});
+
+}); 
 
 module.exports = router;

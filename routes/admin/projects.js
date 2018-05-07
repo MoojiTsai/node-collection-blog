@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const multer = require('multer');
 const Category = require('../../models/category');
-const Post = require('../../models/post');
+const Portfolio = require('../../models/post');
 var fs = require("fs");//操作文件
 
 
@@ -25,7 +25,7 @@ let upload = multer({ storage: storage }).single('imageFile');
 router.get('/', function (req, res, next) {
 
 
-  Post.getPosts().then(function (result) {
+  Portfolio.getPortfolios().then(function (result) {
     res.render('admin/projects/index', {
       title: '專案作品管理',
       posts: result,
@@ -88,7 +88,7 @@ router.post('/new', function (req, res, next) {
         sort: sort
       }
 
-      Post.createPost(post);
+      Portfolio.createPortfolio(post);
       res.redirect('/admin/projects/');
     }
   })
@@ -102,7 +102,7 @@ router.post('/new', function (req, res, next) {
 router.get('/edit/:projectId', function (req, res, next) {
 
   let gc = Category.getCategories();
-  let gp = Post.getPost(req.params.projectId);
+  let gp = Portfolio.getPortfolio(req.params.projectId);
 
   Promise.all([gc, gp]).then((result) => {
    
@@ -145,7 +145,7 @@ router.post('/edit/:projectId', function (req, res, next) {
         image: imagepath,
         sort: sort
       }
-      Post.updatePost(req.params.projectId,post).then((result)=>{
+      Portfolio.updatePortfolio(req.params.projectId,post).then((result)=>{
         console.log('res '+result);
       }).catch(function(err){
         console.log('err: ', err);
@@ -175,7 +175,7 @@ router.post('/fileUploader',function(req,res){
 // GET /projects/:projectId/remove 删除一篇文章
 router.delete('/delete/:projectId', function (req, res) {
   let id = req.params.projectId; 
-  Post.deletePost(id).then(function(result){
+  Portfolio.deletePortfolio(id).then(function(result){
     res.send({success:'post has been deleted!!'});   
   } ).catch((err)=>{console.log(err)}); 
   

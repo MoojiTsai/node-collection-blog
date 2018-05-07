@@ -1,0 +1,37 @@
+
+.container-fluid .row.no-gutters{
+    margin-left:-15px; 
+    margin-right:-15px; 
+}
+
+.portfolio-caption  {
+    z-index:10;
+    opacity:1;
+    position: absolute;
+    top:73%; 
+    left:18%;
+    // transform: translate(-30%,-50%);
+}
+
+a.portfolio-box:hover .portfolio-caption    {
+    opacity:0;
+}
+
+a.portfolio-box:after, .portfolio-caption {
+    transition: opacity 1s;
+}
+a.portfolio-box:after  {
+    content:"";
+    filter:grayscale(70%);
+    display: block;
+    position:absolute;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.4);
+    opacity: 1;
+}
+
+a.portfolio-box:hover::after {   
+    opacity: 0;
+}

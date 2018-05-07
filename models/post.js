@@ -1,28 +1,32 @@
-const Post = require('../lib/mongo').PostModel 
+const Portfolio = require('../lib/mongo').PortfolioModel 
 
 module.exports = {
     // 注册一个用户
-    createPost: function (post) {
-        let data = new Post(post);
+    createPortfolio:  (post)=> {
+        let data = new Portfolio(post);
         data.save(function (err, result) {
             if (err) console.error(err);
             return err; 
         });
-        return Post;
+        return Portfolio;
     },
 
-    getPosts:function(){
-        return Post.find({});
+    getPortfolios:()=>{
+        return Portfolio.find({});
     },
-    getPost:function(id){
-        return Post.findOne({_id:id});
+    getPortfolio:(id)=>{
+        return Portfolio.findOne({_id:id});
     },
-    updatePost:function(id,data){
-        return Post.findByIdAndUpdate(id,data);
+    getPortfoliosByCateory:(categories)=>{
+        return Portfolio.find({categories:{$regex: categories, $options: 'i'}});
     },
-    deletePost:function(id,data){
-        return Post.findByIdAndRemove(id); 
-    } 
+    updatePortfolio:(id,data)=>{
+        return Portfolio.findByIdAndUpdate(id,data);
+    },
+    deletePortfolio:(id,data)=>{
+        return Portfolio.findByIdAndRemove(id); 
+    },
+    
 
 
 }
