@@ -21,12 +21,12 @@ let upload = multer({ storage: storage }).single('imageFile');
 
 
 
-// GET /projects 所有用户或者特定用户的文章页
+// GET /portfolios 所有用户或者特定用户的文章页
 router.get('/', function (req, res, next) {
 
 
   Portfolio.getPortfolios().then(function (result) {
-    res.render('admin/projects/index', {
+    res.render('admin/portfolios/index', {
       title: '專案作品管理',
       posts: result,
     })
@@ -35,11 +35,11 @@ router.get('/', function (req, res, next) {
 
 })
 
-//WORK /projects/create 发表一篇文章
+//WORK /portfolios/create 发表一篇文章
 router.get('/new', function (req, res, next) {
 
   Category.getCategories().then(function (categories) {
-    res.render('admin/projects/new', {
+    res.render('admin/portfolios/new', {
       title: '新增作品',
       categories: categories,
       errors: req.flash('errors'),
@@ -51,13 +51,13 @@ router.get('/new', function (req, res, next) {
 
 
 router.post('/new', function (req, res, next) {
-  
+
   upload(req, res, function (err) {
     if (err) {
       return console.log(err);
     }
     console.log(req.body);
-    req.checkBody('projectname', 'Projectname cant be empty!!!').notEmpty();
+    req.checkBody('portfolioname', 'Projectname cant be empty!!!').notEmpty();
     req.checkBody('category', 'Category cant be empty!!!').notEmpty();
     req.checkBody('description', 'Description cant be empty!!!').notEmpty();
     req.checkBody('sort', 'Sort must be a number').isDecimal();
@@ -69,9 +69,9 @@ router.post('/new', function (req, res, next) {
       req.flash('body', req.body)
 
 
-      return res.redirect('/admin/projects/new');
+      return res.redirect('/admin/portfolios/new');
     } else {
-      let projectname = req.body.projectname;
+      let portfolioname = req.body.portfolioname;
       let category = req.body.category;
       let description = req.body.description;
       let sort = req.body.sort;
@@ -80,33 +80,59 @@ router.post('/new', function (req, res, next) {
         imagepath = req.file.path ? req.file.path : '';
       }
 
-      let post = {
-        name: projectname,
+      let portfolio = {
+        name: portfolioname,
         categories: category,
         description: description,
         image: imagepath,
         sort: sort
       }
 
-      Portfolio.createPortfolio(post);
-      res.redirect('/admin/projects/');
+      Portfolio.createPortfolio(portfolio);
+      res.redirect('/admin/portfolios/');
     }
   })
 
 })
 
 
+router.get('/featured', function (req, res, next) {
+  var isAjaxRequest = req.headers['x-requested-with'];
+  console.log('isAjaxRequest: ',  );
+ if( isAjaxRequest == 'XMLHttpRequest' ){
+  Portfolio.getPortfolios().then(function (result) {
+   return  res.send( {
+      posts: result,
+          });
+        });
+  
+ }else{
+
+  Portfolio.getPortfolios().then(function (result) {
+   return  res.render('admin/portfolios/featured', {
+      title: '精選作品',
+      posts: result,
+          });
+        });
+ }
+      
+ 
 
 
-// GET /projects/:projectId 单独一篇的文章页
-router.get('/edit/:projectId', function (req, res, next) {
+
+});
+
+
+
+// GET /portfolios/:portfolioId 单独一篇的文章页
+router.get('/edit/:portfolioId', function (req, res, next) {
 
   let gc = Category.getCategories();
-  let gp = Portfolio.getPortfolio(req.params.projectId);
+  let gp = Portfolio.getPortfolio(req.params.portfolioId);
 
   Promise.all([gc, gp]).then((result) => {
-   
-    res.render('admin/projects/edit', {
+
+    res.render('admin/portfolios/edit', {
       title: '編輯作品內容',
       categories: result[0],
       errors: req.flash('errors'),
@@ -116,55 +142,55 @@ router.get('/edit/:projectId', function (req, res, next) {
 
 });
 
-router.post('/edit/:projectId', function (req, res, next) {
-    req.checkBody('projectname', 'Projectname cant be empty!!!').notEmpty();
-    req.checkBody('category', 'Category cant be empty!!!').notEmpty();
-    req.checkBody('description', 'Description cant be empty!!!').notEmpty();
-    req.checkBody('sort', 'Sort must be a number').isDecimal();
-    console.log('body = '+JSON.stringify(req.body));
-    let errors = req.validationErrors();
-    if (errors) {
-     
-      console.log(`errors:${JSON.stringify(errors)}  `);
-      req.flash('errors', errors);
-      req.flash('body', req.body)
-      return res.redirect('back');//<---- redirect無法傳資料
-    } else {
+router.post('/edit/:portfolioId', function (req, res, next) {
+  req.checkBody('portfolioname', 'Name cant be empty!!!').notEmpty();
+  req.checkBody('category', 'Category cant be empty!!!').notEmpty();
+  req.checkBody('description', 'Description cant be empty!!!').notEmpty();
+  req.checkBody('sort', 'Sort must be a number').isDecimal();
+  // console.log('body = '+JSON.stringify(req.body));
+  let errors = req.validationErrors();
+  if (errors) {
 
-      let projectname = req.body.projectname;
-      let category = req.body.category;
-      
-      let description = req.body.description;
-      let sort = req.body.sort;
-      let imagepath= req.body.imageFile;
-      
-      let post = {
-        name: projectname,
-        categories: category,
-        description: description,
-        image: imagepath,
-        sort: sort
-      }
-      Portfolio.updatePortfolio(req.params.projectId,post).then((result)=>{
-        console.log('res '+result);
-      }).catch(function(err){
-        console.log('err: ', err);
-        
-      });
-      res.redirect('/admin/projects/');
+    console.log(`errors:${JSON.stringify(errors)}  `);
+    req.flash('errors', errors);
+    req.flash('body', req.body)
+    return res.redirect('back');//<---- redirect無法傳資料
+  } else {
+
+    let portfolioname = req.body.portfolioname;
+    let category = req.body.category;
+
+    let description = req.body.description;
+    let sort = req.body.sort;
+    let imagepath = req.body.imageFile;
+
+    let portfolio = {
+      name: portfolioname,
+      categories: category,
+      description: description,
+      image: imagepath,
+      sort: sort
     }
-  
+    Portfolio.updatePortfolio(req.params.portfolioId, portfolio).then((result) => {
+      // console.log('res '+result);
+    }).catch(function (err) {
+      console.log('err: ', err);
+
+    });
+    res.redirect('/admin/portfolios/');
+  }
+
 
 });
 
-router.post('/fileUploader',function(req,res){
+router.post('/fileUploader', function (req, res) {
   upload(req, res, function (err) {
     if (err) {
-      return console.log('err'+ err);
+      return console.log('err' + err);
     }
 
     // console.log('file '+req.file);
-  res.send(req.file.path);
+    res.send(req.file.path);
   });
 });
 
@@ -172,20 +198,20 @@ router.post('/fileUploader',function(req,res){
 
 
 
-// GET /projects/:projectId/remove 删除一篇文章
-router.delete('/delete/:projectId', function (req, res) {
-  let id = req.params.projectId; 
-  Portfolio.deletePortfolio(id).then(function(result){
-    res.send({success:'post has been deleted!!'});   
-  } ).catch((err)=>{console.log(err)}); 
-  
+// GET /portfolios/:portfolioId/remove 删除一篇文章
+router.delete('/delete/:portfolioId', function (req, res) {
+  let id = req.params.portfolioId;
+  Portfolio.deletePortfolio(id).then(function (result) {
+    res.send({ success: 'post has been deleted!!' });
+  }).catch((err) => { console.log(err) });
+
 });
 
 
 router.get('/category', function (req, res, next) {
   let category_list = [];
   Category.getCategories().then(function (categories) {
-    res.render('admin/projects/category', {
+    res.render('admin/portfolios/category', {
       title: '類別管理',
       categories: categories
     });
@@ -202,7 +228,7 @@ router.post('/category', function (req, res, next) {
     name: categoryname,
   }
   Category.createCategory(category);
-  res.redirect('/admin/projects/category');
+  res.redirect('/admin/portfolios/category');
 });
 
 router.delete('/category/delete', function (req, res) {

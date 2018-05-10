@@ -1,0 +1,94 @@
+<% layout('admin/layouts/admin_master') -%>
+
+
+
+
+
+    <div class="container col-md-12   card" id="indexTable">
+       
+        <div class="row mr-5 my-3">
+            <a @click="savefeatured" href="#" class="ml-auto  btn btn-sm btn-primary">儲存</a>
+        </div>
+
+        {{posts}}
+        <table class="table table-hover ">
+            <thead>
+                  
+                <tr>
+                    <th>加入精選</th>
+                    <th>專案名稱</th>
+                    <th>類別</th>
+                    <th>描述</th>
+
+                </tr>
+            </thead>
+            
+            <tbody>
+
+                <tr v-for="post in posts">
+
+                    <td>
+                        <a class="btn btn-secondary btn-sm" href="#" @click="addfeature" :data-id="post._id">精選</a>
+                    </td>
+                    <td>
+                        {{post.name}}
+                    </td>
+                    <td>
+                        <span v-for="c in post.categories">{{c+', '}}</span>
+                    </td>
+                    <td>
+                        {{post.description.replace(/
+                        <(?:.|\n)*?>/gm, '').substring(0,20)}}
+                    </td>
+
+
+                    {{posts}}
+                </tr>
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <script src="/bower_components/axios/dist/axios.min.js"></script>
+    <script src="/bower_components/vue/dist/vue.min.js"></script>
+    <script>
+
+        let vm = new Vue({
+            el: '#indexTable',
+            data:{posts: ''},
+            methods: {
+                addfeature(event) {
+                    event.preventDefault();
+                    let attr = event.target.getAttribute('class').split(' ');
+
+                    if (attr.indexOf('btn-secondary') != -1) {
+                        event.target.setAttribute("class", "btn btn-success btn-sm");
+                        event.target.dataset['featured'] = true;
+                    } else {
+
+                        event.target.setAttribute("class", "btn btn-secondary btn-sm")
+                    }
+
+                },
+                savefeatured(event) {
+                   
+                    event.preventDefault();
+                    console.log(document.querySelectorAll('a[data-featured=true]'));
+                }
+            },
+            mounted () {
+                axios.get('/admin/portfolios/featured',{  headers: {'x-requested-with':'XMLHttpRequest'}}).then(res => {
+                    this.posts =  res.data.posts;
+                    console.log('this.posts: ', this.posts);
+                    // res.data.posts.forEach(a=>{
+                    //     console.log(' this.posts: ', a.description);
+                    // })
+                    
+                   
+                    
+                    
+                })
+            }
+        });
+    </script>

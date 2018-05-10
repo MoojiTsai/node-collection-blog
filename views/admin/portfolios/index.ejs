@@ -1,7 +1,7 @@
 <% layout('admin/layouts/admin_master') -%>
 
 
-    <div class="container col-md-12 m-5 mx-auto">
+    <div class="container col-md-12  card ">
         <table class="table table-hover " id="indexTable">
             <thead>
                 <tr>
@@ -33,7 +33,7 @@
                                 {{post.description.replace(/<(?:.|\n)*?>/gm, '').substring(0,15)}}
                         </td>
                         <td>
-                            <a class="btn btn-primary btn-sm" v-bind:href="'/admin/projects/edit/'+ post._id">編輯</a>
+                            <a class="btn btn-primary btn-sm" v-bind:href="'/admin/portfolios/edit/'+ post._id">編輯</a>
                             <a class="btn btn-danger btn-sm" href="" @click="deletePost" :data-id="post._id">刪除</a>
                         </td>
 
@@ -42,7 +42,7 @@
             </tbody>
         </table>
     </div>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/bower_components/axios/dist/axios.min.js"></script>
     <script src="/bower_components/vue/dist/vue.min.js"></script>
     <script>
 
@@ -54,7 +54,7 @@
                     let confirm = window.confirm("確定要刪除？");
                     if(confirm){
                     event.preventDefault();
-                    axios.delete('http://localhost:3000/admin/projects/delete/' + event.target.dataset.id)
+                    axios.delete('/admin/portfolios/delete/' + event.target.dataset.id)
                         .then(function (res) {
                             event.target.parentNode.parentNode.setAttribute('style', 'display:none');
                         });

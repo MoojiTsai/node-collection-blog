@@ -9,16 +9,17 @@
     <h1 class="text-center"> 設計作品</h1>
 
     <div class="row no-gutters">
-      
+
       <% posts.forEach((post)=>{%>
-        
-        <div class="col-md-3" style="background: url('<%=post.image%>')">
-            <a href="" class="portfolio-box">
-              <div class="portfolio-caption text-center align-middle">
-                 <%=post.name%> 
+
+        <div class="col-md-3" ">
+            <a href=" " class="portfolio-box ">
+              <div class="portfolio-caption text-center align-middle ">
+              <%=post.name%> 
               </div>  
-             
-            </a>
+              <img class="img-fluid" src="<%=post.image%>" alt="">
+
+          </a>
         </div>
         <%});%>
     </div>
@@ -44,4 +45,3 @@
   <section>
 
   </section>
-

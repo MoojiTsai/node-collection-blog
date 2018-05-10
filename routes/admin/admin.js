@@ -12,7 +12,7 @@ router.get("/",authencation, function(req, res) {
 router.use("/signup", require("./signup"));
 router.use("/signin", require("./signin"));
 router.use("/signout", require("./signout"));
-router.use("/projects", require("./projects"));
+router.use("/portfolios", require("./portfolios"));
 router.use("/menu", require("./menu"));
 
 module.exports = router;
