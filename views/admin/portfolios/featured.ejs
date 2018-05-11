@@ -5,15 +5,21 @@
 
 
     <div class="container col-md-12   card" id="indexTable">
-       
-        <div class="row mr-5 my-3">
-            <a @click="savefeatured" href="#" class="ml-auto  btn btn-sm btn-primary">儲存</a>
-        </div>
+            
+              
+           
+ 
+        
+            <div class="row px-5 m-2 p-3">
+                    <div id="msg"  class="msg alert alert-success ">{{msg}}</div>
+                    <a @click="savefeatured" href="#" class="ml-auto  btn btn-sm btn-primary">儲存</a>
+            </div>
+ 
 
-    
+
         <table class="table table-hover ">
             <thead>
-                  
+
                 <tr>
                     <th>加入精選</th>
                     <th>專案名稱</th>
@@ -22,13 +28,15 @@
 
                 </tr>
             </thead>
-            
+
             <tbody>
 
                 <tr v-for="post in posts">
 
                     <td>
-                        <a class="btn btn-secondary btn-sm" href="#" @click="addfeature" :data-id="post._id">精選</a>
+                        {{post.featured}}
+                        <a v-if="post.featured" class="btn btn-success btn-sm"  href="#" @click="addfeature" :data-featured="post.featured" :data-id="post._id">精選</a>
+                        <a v-else  class="btn btn-secondary btn-sm" href="#" @click="addfeature" :data-featured="post.featured" :data-id="post._id">精選</a>
                     </td>
                     <td>
                         {{post.name}}
@@ -41,7 +49,7 @@
                     </td>
 
 
-                   
+
                 </tr>
 
             </tbody>
@@ -55,7 +63,7 @@
 
         let vm = new Vue({
             el: '#indexTable',
-            data:{posts: ''},
+            data: { posts: '' ,msg:''},
             methods: {
                 addfeature(event) {
                     event.preventDefault();
@@ -65,28 +73,37 @@
                         event.target.setAttribute("class", "btn btn-success btn-sm");
                         event.target.dataset['featured'] = true;
                     } else {
-
+                        event.target.dataset['featured'] = false;
                         event.target.setAttribute("class", "btn btn-secondary btn-sm")
                     }
 
                 },
                 savefeatured(event) {
-                   
                     event.preventDefault();
-                    console.log(document.querySelectorAll('a[data-featured=true]'));
+                    let flash = document.getElementById('msg');
+                    flash.setAttribute('style','opacity:0;'); 
+                    let btns  = document.querySelectorAll('a[data-featured=true]'); 
+                    let featured_ids = [] ; 
+                    // console.log('btns: ', btns);
+                    btns.forEach(e=>{
+                        featured_ids.push(e.dataset.id); 
+                    });
+                    axios.post('/admin/portfolios/featured',{ids:featured_ids}).then(res=>{
+                        
+                        this.msg=res.data.msg ; 
+                    }); 
+                    flash.setAttribute('style','opacity:1;');     
+                    setTimeout(()=>{flash.setAttribute('style','opacity:0;'); },5000);
+
                 }
             },
-            mounted () {
-                axios.get('/admin/portfolios/featured',{  headers: {'x-requested-with':'XMLHttpRequest'}}).then(res => {
-                    this.posts =  res.data.posts;
-                    console.log('this.posts: ', this.posts);
-                    // res.data.posts.forEach(a=>{
-                    //     console.log(' this.posts: ', a.description);
-                    // })
+            mounted() {
+                axios.get('/admin/portfolios/featured', { headers: { 'x-requested-with': 'XMLHttpRequest' } }).then(res => {
+                    this.posts = res.data.posts;
                     
-                   
-                    
-                    
+                    // console.log('this.posts: ', this.posts);
+
+
                 })
             }
         });

@@ -98,30 +98,68 @@ router.post('/new', function (req, res, next) {
 
 router.get('/featured', function (req, res, next) {
   var isAjaxRequest = req.headers['x-requested-with'];
-  console.log('isAjaxRequest: ',  );
- if( isAjaxRequest == 'XMLHttpRequest' ){
-  Portfolio.getPortfolios().then(function (result) {
-   return  res.send( {
-      posts: result,
-          });
-        });
-  
- }else{
+  // console.log('isAjaxRequest: ',  );
+  if (isAjaxRequest == 'XMLHttpRequest') {
+    Portfolio.getPortfolios().then(function (result) {
+      return res.send({
+        posts: result,
+      });
+    });
 
-  Portfolio.getPortfolios().then(function (result) {
-   return  res.render('admin/portfolios/featured', {
-      title: '精選作品',
-      posts: result,
-          });
+  } else {
+
+    Portfolio.getPortfolios().then(function (result) {
+      return res.render('admin/portfolios/featured', {
+        title: '精選作品',
+        posts: result,
+      });
+    });
+  }
+});
+
+
+router.get('/featured', function (req, res, next) {
+  var isAjaxRequest = req.headers['x-requested-with'];
+  if (isAjaxRequest == 'XMLHttpRequest') {
+    Portfolio.getPortfolios().then(function (result) {
+      return res.send({
+        posts: result,
+      });
+    });
+
+  } else {
+
+    Portfolio.getPortfolios().then(function (result) {
+      return res.render('admin/portfolios/featured', {
+        title: '精選作品',
+        posts: result,
+      });
+    });
+  }
+});
+router.post('/featured', function (req, res, next) {
+  let ids = req.body.ids;
+  // console.log('ids: ', ids);
+  let updateData = new Promise((res, rej) => {
+    // console.log('id ='+ ids);
+    ids.forEach(id => {
+      Portfolio.updatePortfolio({ _id: id }, { featured: true })
+        .catch(e => {
+          rej();
+          console.log(e)
         });
- }
-      
- 
+    });
+    res();
+  });
+
+  updateData.then(result => {
+
+    return res.send({ msg: '精選文章已更新！' });
+  });
 
 
 
 });
-
 
 
 // GET /portfolios/:portfolioId 单独一篇的文章页

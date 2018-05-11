@@ -136,3 +136,8 @@ input{
   margin: 10px 0;
 }
 
+.alert.msg{
+  opacity:0; 
+  transition: opacity 0.3s;
+}
+
