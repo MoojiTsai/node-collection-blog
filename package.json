@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon bin/www",
-    "postinstall":"bower install"
+    "postinstall": "bower install"
   },
   "dependencies": {
     "bcrypt": "^2.0.0",
@@ -33,6 +33,7 @@
     "vue-cli": "^2.9.3"
   },
   "devDependencies": {
+    "bower": "^1.8.4",
     "browser-sync": "^2.12.10",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
