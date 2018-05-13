@@ -34,7 +34,6 @@
                 <tr v-for="post in posts">
 
                     <td>
-                        {{post.featured}}
                         <a v-if="post.featured" class="btn btn-success btn-sm"  href="#" @click="addfeature" :data-featured="post.featured" :data-id="post._id">精選</a>
                         <a v-else  class="btn btn-secondary btn-sm" href="#" @click="addfeature" :data-featured="post.featured" :data-id="post._id">精選</a>
                     </td>
@@ -88,11 +87,12 @@
                     btns.forEach(e=>{
                         featured_ids.push(e.dataset.id); 
                     });
-                    axios.post('/admin/portfolios/featured',{ids:featured_ids}).then(res=>{
-                        
+                    setTimeout(()=>{
+                        axios.post('/admin/portfolios/featured',{ids:featured_ids}).then(res=>{
+                        flash.setAttribute('style','opacity:1;');     
                         this.msg=res.data.msg ; 
                     }); 
-                    flash.setAttribute('style','opacity:1;');     
+                    },300);
                     setTimeout(()=>{flash.setAttribute('style','opacity:0;'); },5000);
 
                 }

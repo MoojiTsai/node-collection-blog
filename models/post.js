@@ -11,8 +11,8 @@ module.exports = {
         return Portfolio;
     },
 
-    getPortfolios:()=>{
-        return Portfolio.find({});
+    getPortfolios:(query)=>{
+        return Portfolio.find(query);
     },
     getPortfolio:(id)=>{
         return Portfolio.findOne({_id:id});
@@ -22,6 +22,9 @@ module.exports = {
     },
     updatePortfolio:(id,data)=>{
         return Portfolio.findByIdAndUpdate(id,data);
+    },
+    updatePortfolioWithOps:(query,data,options)=>{
+        return Portfolio.update(query,data,options);
     },
     deletePortfolio:(id,data)=>{
         return Portfolio.findByIdAndRemove(id); 

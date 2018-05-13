@@ -5,7 +5,7 @@ const Portfolio = require('../models/post');
 /* GET home page. */
 router.get('/', function (req, res) {
 
-  Portfolio.getPortfolios().then((posts) => {
+  Portfolio.getPortfolios({featured:true}).then((posts) => {
     data = {
       title: '縮小檢視工作室',
       posts: posts,
@@ -25,7 +25,7 @@ router.get('/portofolio/:category',(req,res)=>{
       title:category,
       posts:posts
     } 
-    res.render('portofolio',data);
+    res.render('category',data);
   }).catch((e)=>{console.log('err '+e)});
 
 }); 

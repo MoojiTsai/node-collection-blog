@@ -1,4 +1,8 @@
 
+img.img-circle{
+    border-radius: 50%; 
+} 
+
 .container-fluid .row.no-gutters{
     margin-left:-15px; 
     margin-right:-15px; 
@@ -35,3 +39,4 @@ a.portfolio-box:after  {
 a.portfolio-box:hover::after {   
     opacity: 0;
 }
+
