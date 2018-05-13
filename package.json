@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon start"
   },
   "dependencies": {
     "bcrypt": "^2.0.0",
@@ -25,6 +25,7 @@
     "mongoose": "^5.0.13",
     "morgan": "~1.9.0",
     "multer": "^1.3.0",
+    "nodemon": "^1.17.4",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sha1": "^1.1.1",
