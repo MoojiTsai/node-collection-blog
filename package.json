@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon bin/www",
-    "postinstall": "bower install"
+    "postinstall": "bower install && gulp scss"
   },
   "dependencies": {
     "bcrypt": "^2.0.0",
