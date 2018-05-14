@@ -69,7 +69,7 @@ router.post('/new', function (req, res, next) {
       return console.log(err);
     }
     console.log(req.file.url);
-    req.checkBody('portfolioname', 'Projectname cant be empty!!!').notEmpty();
+    req.checkBody('portfolioname', 'Name cant be empty!!!').notEmpty();
     req.checkBody('category', 'Category cant be empty!!!').notEmpty();
     req.checkBody('description', 'Description cant be empty!!!').notEmpty();
     req.checkBody('sort', 'Sort must be a number').isDecimal();
