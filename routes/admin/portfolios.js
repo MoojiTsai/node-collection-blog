@@ -1,20 +1,32 @@
 var express = require('express');
 var router = express.Router();
 const multer = require('multer');
+var cloudinary = require('cloudinary');
+var cloudinaryStorage = require('multer-storage-cloudinary');
 const Category = require('../../models/category');
 const Portfolio = require('../../models/post');
 var fs = require("fs");//操作文件
 
 
 
-let storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './storage/')
-  },
+// let storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+
+//     cb(null, './storage/')
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, 'image' + '-' + Date.now() + '.jpg')
+//   }
+// })
+
+
+let storage = cloudinaryStorage({
+  cloudinary: cloudinary,
+  folder: 'colecton-photos',
+  allowedFormats: ['jpg', 'png'],
   filename: function (req, file, cb) {
-    cb(null, 'image' + '-' + Date.now() + '.jpg')
-  }
-})
+    cb(null, 'image' + '-' + Date.now() + '.jpg');}
+});
 
 let upload = multer({ storage: storage }).single('imageFile');
 
@@ -56,7 +68,7 @@ router.post('/new', function (req, res, next) {
     if (err) {
       return console.log(err);
     }
-    console.log(req.body);
+    console.log(req.file.url);
     req.checkBody('portfolioname', 'Projectname cant be empty!!!').notEmpty();
     req.checkBody('category', 'Category cant be empty!!!').notEmpty();
     req.checkBody('description', 'Description cant be empty!!!').notEmpty();
@@ -75,10 +87,10 @@ router.post('/new', function (req, res, next) {
       let category = req.body.category;
       let description = req.body.description;
       let sort = req.body.sort;
-      let imagepath;
-      if (req.file !== undefined) {
-        imagepath = req.file.path ? req.file.path : '';
-      }
+      let imagepath = req.file.url;
+      // if (req.file !== undefined) {
+      //   imagepath = req.file.path ? req.file.path : '';
+      // }
 
       let portfolio = {
         name: portfolioname,
@@ -93,7 +105,7 @@ router.post('/new', function (req, res, next) {
     }
   })
 
-})
+});
 
 
 router.get('/featured', function (req, res, next) {
@@ -188,7 +200,7 @@ router.post('/edit/:portfolioId', function (req, res, next) {
     let description = req.body.description;
     let sort = req.body.sort;
     let imagepath = req.body.imageFile;
-
+    
     let portfolio = {
       name: portfolioname,
       categories: category,
@@ -214,8 +226,8 @@ router.post('/fileUploader', function (req, res) {
       return console.log('err' + err);
     }
 
-    // console.log('file '+req.file);
-    res.send(req.file.path);
+    console.log('file '+req.file.url);
+    res.send(req.file.url);
   });
 });
 

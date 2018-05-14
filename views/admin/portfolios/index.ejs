@@ -18,7 +18,7 @@
                 
                     <tr v-for="post in posts">
                         <td>
-                            <img v-bind:src="'/'+post.image" width="100px" height="100px" alt="">
+                            <img v-bind:src="post.image" width="100px" height="100px" alt="">
                         </td>
                         <td>
                           {{post.name}}

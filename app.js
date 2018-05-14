@@ -7,7 +7,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const config = require('config-lite')(__dirname);
+const conf = require('./config/default'),
+      config = conf() ;
+      // console.log('config: ', config);
 const app = express();
 const router = express.Router();
 const indexRouter = require('./routes/index');
@@ -17,10 +19,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const expressValidator = require('express-validator');
 const engine = require('ejs-mate'); 
-
-
-
-
+var cloudinary = require('cloudinary');
 
 
 // view engine setup
@@ -73,7 +72,11 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-
+cloudinary.config({ 
+  cloud_name: config.cloudary.CLOUD_NAME, 
+  api_key: config.cloudary.CLOUD_KEY,
+  api_secret: config.cloudary.CLOUD_SECRET
+});
 
 // error handler
 app.use(function (err, req, res, next) {

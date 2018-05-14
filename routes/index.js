@@ -8,7 +8,7 @@ router.get('/', function (req, res) {
   Portfolio.getPortfolios({featured:true}).then((posts) => {
     data = {
       title: '縮小檢視工作室',
-      posts: posts,
+    posts: posts,
     }
     return res.render('index', data);
   }).catch((e)=>{console.log('err '+e)});

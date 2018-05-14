@@ -40,7 +40,7 @@
                             <h4>
                                 <label for="imageFile">專案圖片</label>
                                 </h2>
-                                <img v-bind:src="'/'+StorageImagePath" class="rounded mx-auto d-block" height="200" alt="">
+                                <img v-bind:src="StorageImagePath" class="rounded mx-auto d-block" height="200" alt="">
                                 <input type="hidden" name="imageFile" v-model:value="StorageImagePath">
                                 <input type="file" class="col-md-7" name="tempimage" @change="onFileSelected" />
                                 <!-- <button type="button" class="btn btn-primary" @click="onUpload">新圖片上傳</button> -->
@@ -113,7 +113,7 @@
                             fd.append('imageFile', this.selectedFile, this.selectedFile.name);
                             axios.post('/admin/portfolios/fileUploader', fd).then(function (res) {
                                 edit_form.StorageImagePath = res.data;
-                                console.log(edit_form.StorageImagePath)
+                                // console.log(edit_form.StorageImagePath)
 
                             })
                                 .catch(function (err) { console.log(err) });
