@@ -16,25 +16,27 @@
             <tbody>
 
                 
-                    <tr v-for="post in posts">
-                        <td>
-                            <img v-bind:src="post.image" width="100px" height="100px" alt="">
+                    <tr v-for="post in posts" >
+                        <td >
+                            <img v-bind:src="post.image" class="img-fluid rounded" width="100px" height="100px" alt="">
                         </td>
-                        <td>
+                        <td class="align-middle">
                           {{post.name}}
                         </td>
-                        <td>
+                        <td class="align-middle">
                                 {{post.categories}}
                         </td>
-                        <td>
+                        <td class="align-middle">
                                 {{post.sort}}
                         </td>
-                        <td>
+                        <td class="align-middle">
                                 {{post.description.replace(/<(?:.|\n)*?>/gm, '').substring(0,15)}}
                         </td>
-                        <td>
-                            <a class="btn btn-primary btn-sm" v-bind:href="'/admin/portfolios/edit/'+ post._id">編輯</a>
-                            <a class="btn btn-danger btn-sm" href="" @click="deletePost" :data-id="post._id">刪除</a>
+                        <td class="align-middle">
+                            <div class="btn-group btn-group-sm">
+                                <a class="btn btn-outline-primary " v-bind:href="'/admin/portfolios/edit/'+ post._id">編輯</a>
+                                <a class="btn btn-outline-danger " href="" @click="deletePost" :data-id="post._id">刪除</a>
+                            </div>
                         </td>
 
                     </tr>
