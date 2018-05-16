@@ -17,7 +17,7 @@
             
             <%for(var i=0;i<categories.length;i++){%>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" name="category[]" type="checkbox" id="inlineCheckbox<%=i%>" value="<%=categories[i].name%>">
+                <input class="form-check-input" name="category[]" type="checkbox" id="inlineCheckbox<%=i%>" value="<%=categories[i].id%>">
                 <label class="form-check-label" for="inlineCheckbox<%=i%>">
                   <%-categories[i].name%>
                 </label>

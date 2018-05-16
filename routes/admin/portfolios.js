@@ -25,7 +25,8 @@ let storage = cloudinaryStorage({
   folder: 'colecton-photos',
   allowedFormats: ['jpg', 'png'],
   filename: function (req, file, cb) {
-    cb(null, 'image' + '-' + Date.now() + '.jpg');}
+    cb(null, 'image' + '-' + Date.now() + '.jpg');
+  }
 });
 
 let upload = multer({ storage: storage }).single('imageFile');
@@ -36,16 +37,61 @@ let upload = multer({ storage: storage }).single('imageFile');
 // GET /portfolios 所有用户或者特定用户的文章页
 router.get('/', function (req, res, next) {
 
+  var isAjaxRequest = req.headers['x-requested-with'];
 
-  Portfolio.getPortfolios().then(function (result) {
-    res.render('admin/portfolios/index', {
-      title: '專案作品管理',
-      posts: result,
-    })
 
-  })
+  Portfolio.getPortfolios().populate('categories').exec((err, posts) => {
+    if (err) { console.log(err) }
+    console.log(posts)
+    //送出整理好的資料
+  
+    
+      if (isAjaxRequest == 'XMLHttpRequest') {
 
-})
+        res.send({
+          posts: posts,
+        })
+      } else {
+        res.render('admin/portfolios/index', {
+          title: '專案作品管理',
+          posts: posts,
+        })
+
+      }
+    
+
+  });;
+
+
+
+
+  // .then(async function (result) {
+  // let setData = await Promise.all( result.map(async r => {
+
+  //     let categories;
+  //     //處理每筆文章資料
+  //     await Category.getCategoriesById(r.categories).then(c => {
+  //       //用文章裡面的類別id 去找類別資料
+
+  //       console.log('c: ', c);  
+  //       //  ,
+
+  //       //然後丟回去給原本放類別id的屬性, 最後傳給前端
+  //       r.categories = c
+
+  //     }).catch(e => { console.log(e) });
+
+  //     r.description =  r.description.replace(/ <(?:.|\n)*?>/gm, '').substring(0,15); 
+
+  //     return r;
+  //   })); 
+
+
+  // }).catch(e => { console.log(e) });
+
+
+
+});
 
 //WORK /portfolios/create 发表一篇文章
 router.get('/new', function (req, res, next) {
@@ -133,9 +179,9 @@ router.get('/featured', function (req, res, next) {
 router.post('/featured', function (req, res, next) {
   let ids = req.body.ids;
   // console.log('ids: ', ids);
-  let setFalse = new Promise((res,rej)=>{
-    Portfolio.updatePortfolioWithOps({},{featured:false},{multi:true})
-    .catch(e=>{console.log(e); rej();});
+  let setFalse = new Promise((res, rej) => {
+    Portfolio.updatePortfolioWithOps({}, { featured: false }, { multi: true })
+      .catch(e => { console.log(e); rej(); });
     res();
   });
 
@@ -151,10 +197,10 @@ router.post('/featured', function (req, res, next) {
     res();
   });
 
-  Promise.all([setFalse,updateData]).then(result => {
+  Promise.all([setFalse, updateData]).then(result => {
 
     return res.send({ msg: '精選文章已更新！' });
-  }).catch(e=>{console.log(e)});
+  }).catch(e => { console.log(e) });
 
 
 
@@ -200,7 +246,7 @@ router.post('/edit/:portfolioId', function (req, res, next) {
     let description = req.body.description;
     let sort = req.body.sort;
     let imagepath = req.body.imageFile;
-    
+
     let portfolio = {
       name: portfolioname,
       categories: category,
@@ -226,7 +272,7 @@ router.post('/fileUploader', function (req, res) {
       return console.log('err' + err);
     }
 
-    console.log('file '+req.file.url);
+    console.log('file ' + req.file.url);
     res.send(req.file.url);
   });
 });

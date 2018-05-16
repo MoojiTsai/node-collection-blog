@@ -23,16 +23,17 @@
                             <h4>
                                 <label for="">類別</label>
                             </h4>
-                            <%categories.forEach((category)=>{%>
-                                <% i =0%>
+                            
+                            <%categories.forEach((category,i)=>{%>
+                                
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" name="category[]" type="checkbox" id="inlineCheckbox<%=i%>" <%=formdata.categories.indexOf(category.name)!==-1?
-                                            'checked': ''%> value="<%=category.name%>">
+                                        <input class="form-check-input" name="category[]" type="checkbox" id="inlineCheckbox<%=i%>" <%=formdata.categories.indexOf(category.id)!==-1?
+                                            'checked': ''%> value="<%=category.id%>">
                                             <label class="form-check-label" for="inlineCheckbox<%=i%>">
-                                                <%-category.name%>
-                                            </label>
+                                                <%-category.name%> 
+                                            </label> 
                                     </div>
-                                    <% i +=1%>
+                                     
                                         <%})%>
                         </div>
 

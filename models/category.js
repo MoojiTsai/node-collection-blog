@@ -14,6 +14,9 @@ module.exports = {
     getCategories: function () {
         return Category.find({});
     },
+    getCategoriesById: function (ids) {
+        return Category.find({_id:{$in:ids}});
+    },
     deleteCategory: function (id) {
         return Category.findByIdAndRemove({ _id: id }, function (err, data) {
 

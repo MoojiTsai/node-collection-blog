@@ -18,7 +18,8 @@ module.exports = {
         return Portfolio.findOne({_id:id});
     },
     getPortfoliosByCateory:(categories)=>{
-        return Portfolio.find({categories:{$regex: categories, $options: 'i'}});
+        return Portfolio.find({categories:{$regex: categories, $options: 'i'}})
+      
     },
     updatePortfolio:(id,data)=>{
         return Portfolio.findByIdAndUpdate(id,data);
