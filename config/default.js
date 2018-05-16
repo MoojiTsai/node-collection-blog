@@ -2,7 +2,7 @@ module.exports = function(){
   switch(process.env.NODE_ENV){
       case 'development':
           return {
-            port: 3001,
+            port: 3000,
             session: {
               secret: 'myblog',
               key: 'myblog',
@@ -19,7 +19,7 @@ module.exports = function(){
 
       case 'production':
           return {
-            port: 3001,
+            port: 3000,
             session: {
               secret: 'node-collection',
               key: 'node-collection',
