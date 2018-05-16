@@ -64,33 +64,6 @@ router.get('/', function (req, res, next) {
 
 
 
-
-  // .then(async function (result) {
-  // let setData = await Promise.all( result.map(async r => {
-
-  //     let categories;
-  //     //處理每筆文章資料
-  //     await Category.getCategoriesById(r.categories).then(c => {
-  //       //用文章裡面的類別id 去找類別資料
-
-  //       console.log('c: ', c);  
-  //       //  ,
-
-  //       //然後丟回去給原本放類別id的屬性, 最後傳給前端
-  //       r.categories = c
-
-  //     }).catch(e => { console.log(e) });
-
-  //     r.description =  r.description.replace(/ <(?:.|\n)*?>/gm, '').substring(0,15); 
-
-  //     return r;
-  //   })); 
-
-
-  // }).catch(e => { console.log(e) });
-
-
-
 });
 
 //WORK /portfolios/create 发表一篇文章
@@ -157,24 +130,20 @@ router.post('/new', function (req, res, next) {
 router.get('/featured', function (req, res, next) {
   var isAjaxRequest = req.headers['x-requested-with'];
   // console.log('isAjaxRequest: ',  );
+  Portfolio.getPortfolios().populate('categories').exec((err, posts) => {
   if (isAjaxRequest == 'XMLHttpRequest') {
-    Portfolio.getPortfolios().then(function (result) {
       return res.send({
-        posts: result,
+        posts: posts,
       });
-    });
-
   } else {
 
-    Portfolio.getPortfolios().then(function (result) {
-      return res.render('admin/portfolios/featured', {
-        title: '精選作品',
-        posts: result,
-      });
+    return res.render('admin/portfolios/featured', {
+      title: '精選作品',
+      posts: posts,
     });
   }
 });
-
+});
 
 router.post('/featured', function (req, res, next) {
   let ids = req.body.ids;
