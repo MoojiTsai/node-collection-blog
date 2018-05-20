@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV=production && nodemon -e ejs,js ./bin/www ",
+    "start": "export NODE_ENV=production && node app.js ",
+    "dev": "export NODE_ENV=development && nodemon ./bin/www ",
     "postinstall": "bower install && gulp scss"
   },
   "engines": {
     "node": "9.0.0",
     "npm": "4.6.1"
-    },
+  },
   "dependencies": {
     "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
