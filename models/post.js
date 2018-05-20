@@ -14,7 +14,7 @@ module.exports = {
     getPortfolios: (query) => {
         return Portfolio.find(query);
     },
-    getPortfolio: (id) => {
+    getPortfolioById: (id) => {
         return Portfolio.findOne({ _id: id });
     },
     // getPortfoliosByCateory:(categories)=>{

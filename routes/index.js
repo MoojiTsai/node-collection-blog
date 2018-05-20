@@ -9,7 +9,7 @@ router.get('/', function (req, res) {
   Portfolio.getPortfolios({featured:true}).then((posts) => {
     data = {
       title: '縮小檢視工作室',
-    posts: posts,
+      posts: posts,
     }
     return res.render('index', data);
   }).catch((e)=>{console.log('err '+e)});
@@ -40,6 +40,10 @@ router.get('/about',(req,res)=>{
 
 
 router.get('/portfolio/:id',(req,res)=>{
+  let id  = req.params.id; 
+  Portfolio.getPortfolioById(id).then(data=>{
+      res.render('portfolio',{data,title:data.name}); 
+  }).catch(e=>{console.log(e)}); 
   
 }); 
 
