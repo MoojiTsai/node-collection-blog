@@ -270,14 +270,14 @@ router.get('/category', function (req, res, next) {
   }).catch(function (err) {
     if (err) console.log(err);
   });
-
-
-
 });
+
 router.post('/category', function (req, res, next) {
   let categoryname = req.body.category;
+  let categoryslug = req.body.slug.toLowerCase(); 
   let category = {
-    name: categoryname,
+    name: categoryname.trim(),
+    slug:categoryslug.trim()
   }
   Category.createCategory(category);
   res.redirect('/admin/portfolios/category');

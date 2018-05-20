@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "export NODE_ENV=production && nodemon  app.js ",
+    "start": "export NODE_ENV=production && nodemon -e ejs,js ./bin/www ",
     "postinstall": "bower install && gulp scss"
   },
   "engines": {

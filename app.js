@@ -90,7 +90,7 @@ app.use(function (err, req, res, next) {
 });
 
 // 监听端口，启动程序
-app.listen(process.env.PORT || 3000, function () {
+app.listen(process.env.PORT || 3001, function () {
   console.log(`${pkg.name} listening on port ${config.port}`)
 })
 

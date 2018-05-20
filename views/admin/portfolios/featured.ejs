@@ -48,7 +48,7 @@
                         <span v-for="c in post.categories">{{c.name+', '}}</span>
                     </td>
                     <td>
-                        {{post.description.substring(0,20)}}
+                        {{post.description.replace(/<[^>]+>/g, '')+'...'}}
                     </td>
 
 

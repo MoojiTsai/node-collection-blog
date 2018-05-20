@@ -5,10 +5,14 @@
         <div class="row">
             <div class="col  pl-5">
                 <form method="post" action="/admin/portfolios/category">
-                <span>新增類別</span>
-                <div class="form-group">
-                    <input id="category_name" class="form-control w-75" name="category" type="text">
-                </div>
+                    <span>新增類別</span>
+                    <div class="form-group">
+                        <input id="category_name" class="form-control w-75" name="category" type="text">
+                    </div>
+                    <span>Seo 網址名稱 (一段連續英文)</span>
+                    <div class="form-group">
+                        <input id="slug" class="form-control w-75" name="slug" type="text">
+                    </div>
                     <input type="submit" class=" btn btn-primary" value="送出">
                 </form>
             </div>
@@ -17,13 +21,20 @@
                     <thead>
                         <tr>
                             <th>類別名稱</th>
+                            <th>Seo Url</th>
                             <th>動作</th>
+                             
                         </tr>
                     </thead>
                     <tbody>
                         <% categories.forEach(function(category){ %>
                             <tr>
-                                <td> <%=category.name%></td>
+                                <td>
+                                    <%=category.name%>
+                                </td>
+                                <td>
+                                    <%=category.slug%>
+                                </td>
                                 <td class="delete " data-id="<%=category.id%>">
                                     <button class="btn btn-primary btn-sm">刪除</button>
                                 </td>
@@ -37,18 +48,18 @@
     <script>
         $('.delete').on('click', function () {
 
-            
-            if(window.confirm('你確定？')==true) {
+
+            if (window.confirm('你確定？') == true) {
                 let category_id = $(this).attr('data-id');
 
-            $.ajax({
-                url: '/admin/portfolios/category/delete',
-                type: 'DELETE',
-                data: { id: category_id }
-            });
-            $(this).parent('tr').remove();
+                $.ajax({
+                    url: '/admin/portfolios/category/delete',
+                    type: 'DELETE',
+                    data: { id: category_id }
+                });
+                $(this).parent('tr').remove();
             }
-            
+
 
         })
     </script>
