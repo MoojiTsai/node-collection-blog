@@ -32,6 +32,13 @@ router.get('/portfolio/category/:slug',(req,res)=>{
     }).catch((e)=>{console.log('err '+e)});
 }); 
 
+router.get('/about',(req,res)=>{
+  res.render('about',{
+    title:'關於我們', 
+  }); 
+}); 
+
+
 router.get('/portfolio/:id',(req,res)=>{
   
 }); 
